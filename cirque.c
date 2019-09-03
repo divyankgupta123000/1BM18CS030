@@ -11,6 +11,7 @@ void insertion(int q[SIZE],int item,int *r,int *f)
 	else if(*f==-1)
 	 *f=0;
 	 *r=(*r+1)%SIZE;
+         q[*r]=item;
 }
 
 int delete(int q[SIZE],int *f,int *r)
