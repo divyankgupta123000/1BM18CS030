@@ -1,14 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-NODE getnode();
-NODE insert_1st(NODE head1,int item);
-NODE insert_2nd(NODE head2,int item);
-void display(NODE head1,head2);
-void sort(NODE head);
-NODE reverse(NODE head);
-NODE concat(NODE head1,NODE head2);
-
 struct node
 {
 	int data;
@@ -17,10 +9,18 @@ struct node
 
 typedef struct node* NODE;
 
+NODE getnode();
+NODE insert_1st(NODE head1,int item);
+NODE insert_2nd(NODE head2,int item);
+void display(NODE head1,head2);
+void sort(NODE head);
+NODE reverse(NODE head);
+NODE concat(NODE head1,NODE head2);
+
 int main()
 {
 	int i,item,choice=0;
-	NODE head,head1,head2=NULL;
+	NODE head=NULL,head1=NULL,head2=NULL;
 	for(i=0;choice!=7;i++)
 	{
 		printf("Enter your choice: (1)Insert in 1st list (2)Insert in 2nd list (3)Display (4)Sort (5)Reverse (6)Concatenate (7)Exit");
@@ -29,31 +29,31 @@ int main()
 		 {
 			 case 1: printf("Enter the item: ");
 			         scanf("%d",&item);
-					 head1=insert_1st(head1,item);
+			         head1=insert_1st(head1,item);
 			         break;
 					 
 			 case 2: printf("Enter the item: ");
 			         scanf("%d",&item);
-					 head2=insert_2nd(head2,item);
+			         head2=insert_2nd(head2,item);
 			         break;
 					 
 			 case 3: display(head1,head2);
 			         break;
 					 
 			 case 4: printf("Enter choice:(1)List 1 (2)List 2");
-					 scanf("%d",&i);
-					 if(i==1)
+		                 scanf("%d",&i);
+			         if(i==1)
 			          sort(head1);
-					 else
-					  sort(head2);	 
+				 else
+		                  sort(head2);	 
 			         break;
 					 
 			 case 5: printf("Enter choice:(1)List 1 (2)List 2");
-					 scanf("%d",&i);
-					 if(i==1)
+		                 scanf("%d",&i);
+			         if(i==1)
 			          reverse(head1);
-					 else
-					  reverse(head2);	 
+			         else
+		                  reverse(head2);	 
 			         break;
 					
 			 case 6: head=concat(head1,head2);
