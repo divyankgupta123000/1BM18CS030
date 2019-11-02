@@ -34,7 +34,7 @@ void main()
 					head=insert_rear(item,head);
 					break;
 					
-			case 3: printf("Enter the no.to be inserted & posstion: ");
+			case 3: printf("Enter the no.to be inserted & position: ");
 			        scanf("%d",&item);
 					scanf("%d",&pos);
 					head=insert_pos(head,item,pos);
@@ -82,15 +82,14 @@ void main()
 			while(p->next!=NULL)
 			 p=p->next;
 			p->next=q;
-			q->next=NULL;
-			return head;
 		}
 		else
 		{
-			q->next=NULL;
 			head=q;
-			return head;
-		}
+                }
+                
+                q->next=NULL;
+                return head;
 	}
 	
 	NODE insert_pos(NODE head,int item,int pos)
