@@ -39,8 +39,8 @@ void disp_post(Node root)
     {
         return;
     }
-    disp_in(root->lchild);
-    disp_in(root->rchild);
+    disp_post(root->lchild);
+    disp_post(root->rchild);
     printf("%d ",root->data);
 }
 void disp_pre(Node root)
@@ -50,8 +50,8 @@ void disp_pre(Node root)
         return;
     }
     printf("%d ",root->data);
-    disp_in(root->lchild);
-    disp_in(root->rchild);
+    disp_pre(root->lchild);
+    disp_pre(root->rchild);
 }
 int max(Node root)
 {
