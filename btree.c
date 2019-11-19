@@ -81,6 +81,23 @@ int min(Node root)
     }
     return small;
 }
+
+Node mini(Node root)
+{
+    int small=10000;
+    Node p=root,n;
+    if(root==NULL)
+        return root;
+    while(p!=NULL)
+    {
+        if(p->data<small)
+            small=p->data;
+            n=p;
+        p=p->lchild;
+    }
+    return n;
+}
+
 int search(Node root,int key)
 {
     while(root!=NULL)
@@ -135,7 +152,7 @@ Node del(Node root,int key)
         }
         else
         {
-            temp->data=min(root->rchild);
+            temp=mini(root->rchild);
             root->data=temp->data;
             root->rchild=del(root->rchild,temp->data);
         }
