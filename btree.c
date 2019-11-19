@@ -1,211 +1,190 @@
 #include<stdio.h>
 #include<stdlib.h>
+
 struct node
 {
-    int data;
-    struct node* lchild;
-    struct node* rchild;
+   int data;
+   struct node* lchild;
+   struct node* rchild;
 };
-typedef struct node* Node;
-Node getnode(int item)
+
+typedef struct node* NODE;
+
+NODE getnode(int key)
 {
-    Node p;
-    p=(Node)malloc(sizeof(struct node));
-    p->data=item;
-    p->lchild=NULL;
-    p->rchild=NULL;
+   NODE p=(NODE)malloc(sizeof(struct node));
+   if(p==NULL)
+   {
+      printf("Memory wasn't allocated");
+      exit(1);
+   }
+   else
+   {
+      p->data=key;
+      p->rchild=NULL;
+      p->lchild=NULL;
+      return p;
+   }
+}
+
+void inorder(NODE root)
+{
+   if(root==NULL)
+     return;
+   inorder(root->lchild);
+   printf("%d ",root->data);
+   inorder(root->rchild);
+}
+
+void preorder(NODE root)
+{
+   if(root==NULL)
+     return;
+   printf("%d ",root->data);
+   preorder(root->lchild);
+   preorder(root->rchild);
+}
+
+void postorder(NODE root)
+{
+   if(root==NULL)
+     return;
+   postorder(root->lchild);
+   postorder(root->rchild);
+   printf("%d ",root->data);
+}
+
+NODE insert(NODE root,int key)
+{
+   if(root==NULL)
+     return root=getnode(key);
+   if(key<root->data)
+     root->lchild=insert(root->lchild,key);
+   else if(key>root->data)
+     root->rchild=insert(root->rchild,key);
+   return root;
+}
+
+int search(NODE root,int key)
+{
+   int value=1;
+   if(root==NULL)
+     return 0;
+   if(key<root->data)
+     value=search(root->lchild,key);
+   else if(key>root->data)
+     value=search(root->rchild,key);
+   return value;
+}
+
+NODE min(NODE root)
+{
+    NODE p;
+    if(root->lchild==NULL)
+      return root;
+     p=min(root->lchild);
     return p;
 }
-void disp_lvl(Node root)
+
+NODE max(NODE root)
 {
-  if(root==NULL)
-  return;
-  
+    NODE p;
+    if(root->rchild==NULL)
+      return root;
+     p=max(root->rchild);
+    return p;
 }
 
-void disp_in(Node root)
+NODE delete(NODE root,int key)
 {
-    if(root==NULL)
-    {
-        return;
-    }
-    disp_in(root->lchild);
-    printf("%d ",root->data);
-    disp_in(root->rchild);
-}
-void disp_post(Node root)
-{
-    if(root==NULL)
-    {
-        return;
-    }
-    disp_post(root->lchild);
-    disp_post(root->rchild);
-    printf("%d ",root->data);
-}
-void disp_pre(Node root)
-{
-    if(root==NULL)
-    {
-        return;
-    }
-    printf("%d ",root->data);
-    disp_pre(root->lchild);
-    disp_pre(root->rchild);
-}
-int max(Node root)
-{
-    int large=0;
-    Node p=root;
-    if(root==NULL)
-        return -9999;
-    while(p!=NULL)
-    {
-        if(p->data>large)
-            large=p->data;
-        p=p->rchild;
-    }
-    return large;
-}
-int min(Node root)
-{
-    int small=10000;
-    Node p=root;
-    if(root==NULL)
-        return -9999;
-    while(p!=NULL)
-    {
-        if(p->data<small)
-            small=p->data;
-        p=p->lchild;
-    }
-    return small;
-}
-
-Node mini(Node root)
-{
-    int small=10000;
-    Node p=root,n;
     if(root==NULL)
         return root;
-    while(p!=NULL)
-    {
-        if(p->data<small)
-            small=p->data;
-            n=p;
-        p=p->lchild;
-    }
-    return n;
-}
-
-int search(Node root,int key)
-{
-    while(root!=NULL)
-    {
-        if(key>root->data)
-            root=root->rchild;
-        else if(key<root->data)
-            root=root->lchild;
-        else
-            return 1;
-    }
-    return 0;
-}
-Node insert(Node root,int item)
-{
-    if(root==NULL)
-        return getnode(item);
-    if(item < root->data)
-        root->lchild=insert(root->lchild,item);
-    else if(item > root->data)
-        root->rchild=insert(root->rchild,item);
-    return root;
-}
-Node del(Node root,int key)
-{
-    Node temp;
-    if(root==NULL)
-    {
-        return root;
-    }
-    if(key < root->data)
-    {
-        root->lchild=del(root->lchild,key);
-    }
-    else if(key > root->data)
-    {
-        root->rchild=del(root->rchild,key);
-    }
+    if(key<root->data)
+        root->lchild=delete(root->lchild,key);
+    else if(key>root->data)
+        root->rchild=delete(root->rchild,key);
     else
     {
         if(root->lchild==NULL)
         {
-            temp=root->rchild;
+            NODE temp=root->rchild;
             free(root);
             return temp;
         }
         else if(root->rchild==NULL)
         {
-            temp=root->lchild;
+            NODE temp=root->lchild;
             free(root);
             return temp;
         }
-        else
-        {
-            temp=mini(root->rchild);
-            root->data=temp->data;
-            root->rchild=del(root->rchild,temp->data);
-        }
+        NODE temp=min(root->rchild);
+        root->data=temp->data;
+        root->rchild=delete(root->rchild,temp->data);
     }
     return root;
 }
-void main()
+
+int main()
 {
-    Node root=NULL;
-    int item,n;
-    printf("Enter\n1.insert\n2.delete\n3.display in-order\n4.display post-order\n5.display pre-order\n6.search a particular element\n7.find maximum value\n8.find minimum value\n");
-	do{
-        printf("Enter your choice:\n");
-		scanf("%d",&n);
-        switch(n)
-        {
-            case 1:
-                printf("Enter the element to be inserted\n");
-                scanf("%d",&item);
-                root=insert(root,item);
-                break;
-            case 2:
-                printf("Enter th element to be deleted\n");
-                scanf("%d",&item);
-                root=del(root,item);
-                break;
-            case 3:
-                disp_in(root);
-                break;
-            case 4:
-                disp_post(root);
-                break;
-            case 5:
-                disp_pre(root);
-                break;
-            case 6:
-                printf("enter the element to be searched\n");
-                scanf("%d",&item);
-                if(search(root,item)==1)
-                    printf("The number %d is present in the tree\n",item);
-                else
-                    printf("Not present");
-                    break;
-            case 7:
-                item=max(root);
-                printf("The maximum value in the tree is %d\n",item);
-                break;
-            case 8:
-                item=min(root);
-                printf("The minimum value in the tree is %d\n",item);
-                break;
-        }
-        printf("to continue press 1\n");
-        scanf("%d",&n);
-    }while(n==1);
+   int i,item,choice=0;
+   NODE p,root=NULL;
+   printf("Enter:\n(1)Insertion of Key\n(2)Inorder Display\n(3)Preorder Display\n(4)Postorder Display\n");
+   printf("(5)Searching a key\n(6)Deletion of a key\n(7)Minimum key value\n(8)Maximum key value\n(9)Exit\n");
+   for(i=0;choice!=9;i++)
+   {
+      printf("\nEnter your choice:\n");
+      scanf("%d",&choice);
+      switch(choice)
+      {
+         case 1: printf("Enter key to be inserted: ");
+                 scanf("%d",&item);
+                 root=insert(root,item);
+                 break;
+
+         case 2: inorder(root);
+                 printf("\n");
+                 break;
+
+         case 3: preorder(root);
+                 printf("\n");
+                 break;
+
+         case 4: postorder(root);
+                 printf("\n");
+                 break;
+
+         case 5: printf("Enter key to be searched: ");
+                 scanf("%d",&item);
+                 if(search(root,item)==1)
+                  printf("Key found in binary tree!!\n");
+                 else
+                  printf("Key does not exist!!\n");
+                 break;
+
+         case 6: printf("Enter the key to be deleted: ");
+                 scanf("%d",&item);
+                 p=delete(root,item);
+                 printf("\n");
+                 break;
+
+         case 7: p=min(root);
+                 if(p==NULL)
+                    printf("The Binary Tree is empty\n");
+                 else
+                    printf("Minimum key value: %d\n",p->data);
+                 break;
+
+         case 8: p=max(root);
+                 if(p==NULL)
+                    printf("The Binary Tree is empty\n");
+                 else
+                    printf("Maximum key value: %d\n",p->data);
+                 break;
+
+         case 9: exit(0);
+
+         default: break;
+      }
+   }
+   return 0;
 }
